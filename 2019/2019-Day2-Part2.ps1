@@ -40,4 +40,47 @@ To do this, before running the program, replace position 1 with the value 12 and
 What value is left at position 0 after the program halts?
 #>
 
-$program = '1,9,10,3,2,3,11,0,99,30,40,50' -split ','
+#[System.Collections.ArrayList]$program = '1,9,10,3,2,3,11,0,99,30,40,50' -split ','
+
+[System.Collections.ArrayList]$startingProgram = (Get-Content -Path .\2019-Day2-Input.ps1 -Raw) -split ','
+$program = $startingProgram
+foreach ($positionOne in 0..99)
+{
+    foreach ($positionTwo in 0..99)
+    {
+        $program = $startingProgram
+        $program[1] = $positionOne
+        $program[2] = $positionTwo
+        $start = 0
+
+        do
+        {
+            $optcode = @()
+            $end = $start + 3
+            foreach ($number in $program[$start..$end])
+            {
+                $optcode += $number
+            }
+
+            switch ($optcode[0])
+            {
+                1 {$mathResult = [int]$program[$optcode[1]] + $program[$optcode[2]]}
+                2 {$mathResult = [int]$program[$optcode[1]] * $program[$optcode[2]]}
+                default {'someting went wrong';continue}
+            }
+
+            $program[$optcode[3]] = $mathResult
+
+            $start = $start + 4
+        }
+        while ($program[$start] -ne 99)
+    }
+
+    if ($program[0] -eq '19690720')
+    {
+        return $program[0]
+    }
+    
+}
+
+# $program -join ','
