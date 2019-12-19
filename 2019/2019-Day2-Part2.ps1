@@ -43,12 +43,12 @@ What value is left at position 0 after the program halts?
 #[System.Collections.ArrayList]$program = '1,9,10,3,2,3,11,0,99,30,40,50' -split ','
 
 [System.Collections.ArrayList]$startingProgram = (Get-Content -Path .\2019-Day2-Input.ps1 -Raw) -split ','
-$program = $startingProgram
+
 foreach ($positionOne in 0..99)
 {
     foreach ($positionTwo in 0..99)
     {
-        $program = $startingProgram
+        $program = $startingProgram.Clone()
         $program[1] = $positionOne
         $program[2] = $positionTwo
         $start = 0
@@ -72,15 +72,14 @@ foreach ($positionOne in 0..99)
             $program[$optcode[3]] = $mathResult
 
             $start = $start + 4
+
+            if ($program[0] -eq '19690720')
+            {
+                return "Program start = {0} noun = {1} verb = {2}" -f $program[0], $program[1], $program[2]
+            }
         }
         while ($program[$start] -ne 99)
     }
-
-    if ($program[0] -eq '19690720')
-    {
-        return $program[0]
-    }
-    
 }
 
 # $program -join ','
