@@ -30,11 +30,25 @@ function Get-PathTraveled
         # need to subtract when going left or down
         if ($locationBefore['x'] -ne $location['x'])
         {
-            ($locationBefore['x'] +1)..$location['x'] | ForEach-Object -Process {$history.Add(('x' + $PSItem + ',' + 'y' + $location['y'])) | Out-Null}
+            if ($azimuth -eq 'R')
+            {
+                ($locationBefore['x'] +1)..$location['x'] | ForEach-Object -Process {$history.Add(('x' + $PSItem + ',' + 'y' + $location['y'])) | Out-Null}
+            }
+            else
+            {
+                ($locationBefore['x'] -1)..$location['x'] | ForEach-Object -Process {$history.Add(('x' + $PSItem + ',' + 'y' + $location['y'])) | Out-Null}
+            }
         }
         else
         {
-            ($locationBefore['y'] +1)..$location['y'] | ForEach-Object -Process {$history.Add(('x' + $location['x'] + ',' + 'y' + $PSItem)) | Out-Null}
+            if ($azimuth -eq 'U')
+            {
+                ($locationBefore['y'] +1)..$location['y'] | ForEach-Object -Process {$history.Add(('x' + $location['x'] + ',' + 'y' + $PSItem)) | Out-Null}
+            }
+            else 
+            {
+                ($locationBefore['y'] -1)..$location['y'] | ForEach-Object -Process {$history.Add(('x' + $location['x'] + ',' + 'y' + $PSItem)) | Out-Null}
+            }
         }
     }
 
@@ -94,23 +108,23 @@ function Get-ManhattanDistance
 }
 
 $pathOne, $pathTwo = (Get-Content -Path $PSScriptRoot\2019-Day3-Input.txt) -split '\n'
-$a = Get-PathTraveled -Directions ('R8,U5,L5,D3' -split ',')
-$b = Get-PathTraveled -Directions ('U7,R6,D4,L4' -split ',')
+$a = Get-PathTraveled -Directions ($pathOne -split ',')
+$b = Get-PathTraveled -Directions ($pathTwo -split ',')
 
 $crossRoads = Get-PathesCrossed -PathOne $a.History -PathTwo $b.History | Where {$_ -ne 'x0,y0'}
 
 # $crossRoads | %{ Get-ManhattanDistance -CordinanceOne 'x0,y0' -CordinanceTwo $_} | sort | select -First 1
-
-$stepsPerCrossRoad = @()
+[system.Collections.ArrayList]$pathsCrossedSteps = @()
 foreach ($crossRoad in $crossroads)
 {
-    $aIndex = $a.History.IndexOf($crossRoad)
+    $aIndex = $a.History.IndexOf($crossRoad) + 1
 
-    $bIndex = $b.History.IndexOf($crossRoad)
+    $bIndex = $b.History.IndexOf($crossRoad) + 1
 
-    $stepsPerCrossRoad += $aIndex + $bIndex
+    $pathsCrossedSteps.Add($aIndex + $bIndex) | Out-Null
 }
-$stepsPerCrossRoad
+
+$pathsCrossedSteps | sort
 <#
 27941
 28145
