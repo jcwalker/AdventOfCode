@@ -12,7 +12,7 @@ The fuel required by a module of mass 100756 and its fuel is: 33583 + 11192 + 37
 What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them all up at the end.)
 #>
 # 5083370 - Answer
-$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.ps1'
+$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.txt'
 $massList = Get-Content -Path $inputDataPath
 
 function Get-FuelRequirement

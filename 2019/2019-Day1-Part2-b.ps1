@@ -13,7 +13,7 @@ What is the sum of the fuel requirements for all of the modules on your spacecra
 #>
 # 5083370 - Answer
 $result = 0
-$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.ps1'
+$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.txt'
 $massList = Get-Content -Path $inputDataPath
 
 foreach ($number in $massList)

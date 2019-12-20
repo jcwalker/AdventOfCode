@@ -21,7 +21,7 @@ The Fuel Counter-Upper needs to know the total fuel requirement. To find it, ind
 What is the sum of the fuel requirements for all of the modules on your spacecraft?
 #>
 $massRequirements = 0
-$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.ps1'
+$inputDataPath = Join-Path -Path $PSScriptRoot -ChildPath '2019-Day1-Input.txt'
 $massList = Get-Content -Path $inputDataPath
 
 foreach ($mass in $massList)

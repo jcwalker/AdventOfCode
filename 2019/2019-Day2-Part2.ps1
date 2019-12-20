@@ -42,7 +42,7 @@ What value is left at position 0 after the program halts?
 
 #[System.Collections.ArrayList]$program = '1,9,10,3,2,3,11,0,99,30,40,50' -split ','
 
-[System.Collections.ArrayList]$startingProgram = (Get-Content -Path .\2019-Day2-Input.ps1 -Raw) -split ','
+[System.Collections.ArrayList]$startingProgram = (Get-Content -Path .\2019-Day2-Input.txt -Raw) -split ','
 
 foreach ($positionOne in 0..99)
 {
