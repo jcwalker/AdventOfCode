@@ -19,7 +19,7 @@ function Find-PossiblePassword
     (
         [Parameter(Mandatory=$true)]
         [string[]]
-        $possiblePasswords
+        $PossiblePasswords
     )
 
     foreach ($possiblePassword in $possiblePasswords)
