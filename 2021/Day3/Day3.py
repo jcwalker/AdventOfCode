@@ -1,36 +1,60 @@
 #!/usr/bin/env python
 import os
 from pathlib import Path
+import math
 
-parent = Path(__file__).resolve().parent
-intputFile = os.path.join(parent, 'Day3-Sample.txt')
+pscriptRoot = Path(__file__).resolve().parent
+intputFile = os.path.join(pscriptRoot, 'Day3-Input.txt')
 file = open(intputFile)
 
-column1 = []
-column2 = []
-column3 = []
-column4 = []
-column5 = []
-
 numbers = file.readlines()
-# 00100
+columnCount = len(str(numbers[0].strip("\r\n")))
+
+# create dictionary with a key for each column
+table = {}
+tableCounter = 1
+
+for column in range(0, columnCount):
+    newColumn = {"column" + str(tableCounter) : []}
+    table.update(newColumn)
+    tableCounter += 1
+
+# add values to dictionary
 for number in numbers:
-    column1.append(number[:1])
-    column2.append(number[1:2])
-    column3.append(number[2:3])
-    column4.append(number[3:4])
-    column5.append(number[4:5])
+    counter = 1
+    previous = None
+    for num in range(0,columnCount):
+        currentColumn = "column" + str(counter)
 
-# most common
-gama1    = max(column1, key = column1.count)
-epsilon1 = min(column1, key = column1.count)
-gama2 = max(column2, key = column2.count)
-epsilon2 = min(column2, key = column2.count)
-mode3 = mode(column3)
-mode4 = mode(column4)
-mode5 = mode(column5)
+        table[currentColumn].append(int(number[previous:counter]))
+        previous = counter
+        counter += 1
 
-gamaRate = mode1 + mode2 + mode3 + mode4 + mode5
-print(gamaRate)
-print(multimode(column1))
+# create another table to store the results
+results = {}
+resultsCounter = 1
+# loop through table to populate results
+for column in range(0, columnCount):
+    currentColumn = "column" + str(resultsCounter)
+    gama    = max(table[currentColumn], key = table[currentColumn].count)
+    epsilon = min(table[currentColumn], key = table[currentColumn].count)
 
+    results.update({currentColumn + "gama" : gama})
+    results.update({currentColumn + "epsilon" : epsilon})
+    resultsCounter += 1
+
+# calculate gamarate
+gamaRate = ""
+epsilonRate = ""
+gamaCounter = 1
+for column in range(0, columnCount):
+    currentGamaColumn = "column" + str(gamaCounter) + "gama"
+    currentEpislonColumn = "column" + str(gamaCounter) + "epsilon"
+
+    gamaRate    = gamaRate + str(results[currentGamaColumn])
+    epsilonRate = epsilonRate + str(results[currentEpislonColumn])
+    gamaCounter += 1
+
+# convert to decimal and multiple
+answer = (int(gamaRate, 2) * int(epsilonRate, 2))
+print('Anwser: ', answer)
