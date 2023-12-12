@@ -1,14 +1,3 @@
-# $day1Input = @(
-#     'two1nine'
-#     'eightwothree'
-#     'abcone2threexyz'
-#     'xtwone3four'
-#     '4nineeightseven2'
-#     'zoneight234'
-#     '7pqrstsixteen'
-# )
-
-# oneight
 function Resolve-Number
 {
     param
@@ -30,7 +19,7 @@ function Resolve-Number
     }
 }
 
-$pattern = '\d|one|two|three|four|five|six|seven|eight|nine'
+$pattern = '(?=(\d|one|two|three|four|five|six|seven|eight|nine))'
 $day1Input = Get-Content -Path .\day1PuzzleInput.txt
 
 [int[]]$result = @()
@@ -38,7 +27,7 @@ $day1Input = Get-Content -Path .\day1PuzzleInput.txt
 foreach ($line in $day1Input)
 {
     $numberMatches = Select-String -InputObject $line -Pattern $pattern -AllMatches
-    $result += '{0}{1}' -f (Resolve-Number $numberMatches.Matches[0].Value), (Resolve-Number $numberMatches.Matches[-1].Value)
+    $result += '{0}{1}' -f (Resolve-Number $numberMatches.Matches[0].Groups[-1].Value), (Resolve-Number $numberMatches.Matches[-1].Groups[-1].Value)
 }
 
 #Measure-Command {$result | Measure-Object -Sum}
